@@ -8,7 +8,7 @@ import org.ms.entities.Instructor;
 import org.ms.entities.InstructorDetail;
 
 
-public class ReadBidirectionalDemo {
+public class DeleteBidirectionalDemo {
 	public static void main(String[] args) {
 		SessionFactory factory = new Configuration()
 								.configure("hibernate.cfg.xml")
@@ -26,10 +26,14 @@ public class ReadBidirectionalDemo {
 			
 			//start transaction
 			session.beginTransaction();
-			int tempId=2;
+			int tempId=6;
 			InstructorDetail tempInstructorDetail = session.get(InstructorDetail.class, tempId);
 			
+			// breaks bi directional link
+			tempInstructorDetail.getInstructor().setInstructorDetail(null);
+			
 			System.out.println(tempInstructorDetail.getInstructor());
+			session.delete(tempInstructorDetail);
 			session.getTransaction().commit();
 			System.out.println("Done");
 			
